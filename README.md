@@ -70,22 +70,83 @@ Result:
 Problem Statement 5: How many matches were played each season?
 
 SQL Query:
+select season, count(id) as matches_played_each_season
+from matches
+group by season;
 
 Result:
+<img width="637" height="280" alt="image" src="https://github.com/user-attachments/assets/91cae2e9-cc88-4fa3-83cf-dea1d04608e4" />
 
    
-8. Which team won the most matches?
-9. Which team has the highest win percentage?
-10. What is the average first innings score?
-11. Which venue produces the highest scores?
-12. Which toss decision is more successful?
-13. Team-wise home ground performance.
-14. Most successful captain.
-15. Rank teams by total wins.
-16. Top 5 run scorers by season.
-17. Top wicket takers by season.
-18. Highest successful run chase.
-19. Calculate win percentage for every team.
+Problem Statement 6: Which team won the most matches?
+
+SQL Query: 
+select winner, count(winner)
+from matches
+group by winner
+Order by winner DESC
+limit 1;
+
+Result:
+<img width="778" height="87" alt="image" src="https://github.com/user-attachments/assets/7879ddb8-1dbb-4253-ae09-9c1cd15abc23" />
+
+Problem Statement 7: Which team has the highest win percentage?
+
+SQL Query:
+With team_total_matches as (
+	Select team1 as team 
+    from matches
+    Union All
+    Select team2 as team 
+    from matches
+    ),
+    matches_played as (
+		Select team, Count(*) as played
+        from team_total_matches
+        Group by team
+        ),
+	matches_won as (
+		Select winner as team, Count(*) as won
+        from matches
+        where winner is not null
+        Group by winner
+        )
+SELECT
+    mp.team,
+    mp.played,
+    COALESCE(mw.won, 0) AS won,
+    ROUND(
+        COALESCE(mw.won, 0) * 100.0 / mp.played,
+        2
+    ) AS win_percentage
+FROM matches_played mp
+LEFT JOIN matches_won mw
+    ON mp.team = mw.team
+ORDER BY win_percentage DESC
+limit 1;
+
+Result:
+<img width="577" height="103" alt="image" src="https://github.com/user-attachments/assets/b101308f-fe29-489e-bcfb-25da92226c6b" />
+
+
+Problem Statement 8: Which toss decision is more successful?
+SELECT
+    toss_decision,
+    COUNT(*) AS total_matches,
+    SUM(CASE WHEN toss_winner = winner THEN 1 ELSE 0 END) AS wins_after_winning_toss,
+    ROUND(
+        SUM(CASE WHEN toss_winner = winner THEN 1 ELSE 0 END) * 100.0
+        / COUNT(*),
+        2
+    ) AS success_rate
+FROM matches
+GROUP BY toss_decision
+ORDER BY success_rate DESC;
+
+Result:
+<img width="632" height="122" alt="image" src="https://github.com/user-attachments/assets/90cf3083-896a-4c61-b2bf-7bd842312988" />
+
+
 ## Project Structure 
 - Dataset files
 - SQL queries
