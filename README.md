@@ -6,20 +6,34 @@ Source: Kaggle IPL Dataset
 ## Tools Used 
 - SQL
 - MySQL
-- GitHub 
+- GitHub
+## Skills Demonstrated
+
+- SQL Queries
+- Aggregate Functions
+- Joins
+- Common Table Expressions (CTEs)
+- Subqueries
+- Data Analysis
+- Sports Analytics
+- MySQL
+- Git & GitHub
+
 ## Analysis Performed 
-Problem Statement 1. Total number of matches played?
-SQL Query:
+# Problem Statement 1. Total number of matches played?
+
+## SQL Query:
 
 SELECT COUNT(id) as No_of_matches_played
 from matches;
 
-Result:
+## Result:
 <img width="652" height="145" alt="Screenshot 2026-11-20 140003" src="https://github.com/user-attachments/assets/1de76002-2de2-4961-9f20-304ab0c44065" />
 
 
-Problem Statement 2: How many teams participated?
-SQL Query:
+# Problem Statement 2: How many teams participated?
+
+## SQL Query:
 
 SELECT COUNT(DISTINCT team) AS No_of_Teams_Played
 FROM (
@@ -32,12 +46,13 @@ FROM (
     FROM matches
 ) AS teams;
 
-Result:
+## Result:
 <img width="652" height="145" alt="image" src="https://github.com/user-attachments/assets/34e73cf4-0860-4ee0-81cf-6b8ec55a593f" />
 
-Problem Statement 3: 3. Which team played the most matches?
+# Problem Statement 3: Which team played the most matches?
 
-SQL Query:
+## SQL Query:
+
 SELECT team,
        COUNT(*) AS matches_played
 FROM (
@@ -51,48 +66,55 @@ GROUP BY team
 ORDER BY matches_played DESC
 LIMIT 1;
 
-Result:
+## Result:
 <img width="752" height="107" alt="image" src="https://github.com/user-attachments/assets/1c3584e8-b286-4927-ab0a-2c381d0d460c" />
 
 
-Problem Statement 4: Which venue hosted the most matches?
+# Problem Statement 4: Which venue hosted the most matches?
 
-SQL Query:
+## SQL Query:
+
 SELECT city, COUNT(city) as city_hosted_most_matches
 from matches
 group by city 
 Order by COUNT(city) Desc
 Limit 1;
 
-Result:
+## Result:
 <img width="787" height="108" alt="image" src="https://github.com/user-attachments/assets/a9de5087-2ea9-4fdb-bc99-f7da9b724132" />
 
-Problem Statement 5: How many matches were played each season?
+# Problem Statement 5: How many matches were played each season?
 
-SQL Query:
+## SQL Query:
+
 select season, count(id) as matches_played_each_season
 from matches
 group by season;
 
-Result:
+## Result:
 <img width="637" height="280" alt="image" src="https://github.com/user-attachments/assets/91cae2e9-cc88-4fa3-83cf-dea1d04608e4" />
 
    
-Problem Statement 6: Which team won the most matches?
+# Problem Statement 6: Which team won the most matches?
 
-SQL Query: 
-select winner, count(winner)
-from matches
-group by winner
-Order by winner DESC
-limit 1;
+## SQL Query: 
 
-Result:
-<img width="778" height="87" alt="image" src="https://github.com/user-attachments/assets/7879ddb8-1dbb-4253-ae09-9c1cd15abc23" />
+SELECT winner,
+       COUNT(*) AS matches_won
+FROM matches
+WHERE winner IS NOT NULL
+GROUP BY winner
+ORDER BY matches_won DESC
+LIMIT 1;
 
-Problem Statement 7: Which team has the highest win percentage?
+## Result:
+<img width="781" height="106" alt="image" src="https://github.com/user-attachments/assets/2efb888f-ef9c-49ee-8ad8-8661a55ecbff" />
 
-SQL Query:
+
+# Problem Statement 7: Which team has the highest win percentage?
+
+## SQL Query:
+
 With team_total_matches as (
 	Select team1 as team 
     from matches
@@ -125,11 +147,14 @@ LEFT JOIN matches_won mw
 ORDER BY win_percentage DESC
 limit 1;
 
-Result:
+## Result:
 <img width="577" height="103" alt="image" src="https://github.com/user-attachments/assets/b101308f-fe29-489e-bcfb-25da92226c6b" />
 
 
-Problem Statement 8: Which toss decision is more successful?
+# Problem Statement 8: Which toss decision is more successful?
+
+## SQL Query:
+
 SELECT
     toss_decision,
     COUNT(*) AS total_matches,
@@ -143,17 +168,26 @@ FROM matches
 GROUP BY toss_decision
 ORDER BY success_rate DESC;
 
-Result:
+## Result:
 <img width="632" height="122" alt="image" src="https://github.com/user-attachments/assets/90cf3083-896a-4c61-b2bf-7bd842312988" />
 
-
 ## Project Structure 
-- Dataset files
-- SQL queries
-- Screenshots of results
-- Documentation 
-## Author : Leena Bitoni
 
-## Markdown
-sh
+- Dataset: IPL matches datasets from Kaggle.
+- SQL Queries: Contains analytical SQL queries used to extract insights.
+- README.md: Project overview, business questions, SQL solutions, and key findings.
+- Screenshots: Query outputs and visual results for reference
+
+## Key Insights
+
+• Mumbai Indians have won the most matches.
+• Fielding first is the more successful toss strategy.
+• High-scoring venues favor chasing teams.
+• Win percentage varies significantly across franchises.
+
+## Author : Leena Bitoni
+- GitHub: https://github.com/Linabitoni
+- LinkedIn: https://www.linkedin.com/in/lina-bitoni-392471104/
+
+
 
